@@ -6,6 +6,10 @@ app = Flask(__name__)
 
 @app.route('/')
 def home():
+
+    openai.api_key = os.getenv("OPENAI_API_KEY")
+
+
     return render_template('index.html')
 
 if __name__ == "__main__":
