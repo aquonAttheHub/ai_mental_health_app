@@ -1,12 +1,110 @@
 <!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AI Mental Health App</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+      body {
+        font-family: Helvetica, serif;
+        background-color: #f4f4f4;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+      }
 
-<html lang="eng">
-    <head>
-        <meta charset="UTF-8">
-        <link rel="stylesheet" href="{{ url_for('static', filename= 'css/style.css') }}">
-        <title>Flask Docker</title>
+      .chat-container {
+        background-color: #ffffff;
+        border-radius: 5px;
+        padding: 20px;
+        width: 80%;
+        max-width: 600px;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+      }
+
+      h1 {
+        text-align: center;
+        margin-bottom: 20px;
+      }
+
+      #chat-form {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 20px;
+      }
+
+      #user-input {
+        flex-grow: 1;
+        border: 1px solid #e0e0e0;
+        border-radius: 5px;
+        padding: 10px;
+      }
+
+      #submitBtn {
+        background-color: #9cd8ff;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        padding: 10px 15px;
+        margin-left: 10px;
+        cursor: pointer;
+      }
+
+      #submitBtn:hover {
+        background-color: #bbe4ff;
+      }
+
+      #result {
+        border: 1px solid #edecec;
+        border-radius: 5px;
+        padding: 20px;
+        background-color: #f8f8f8;
+        min-height: 100px;
+        overflow-wrap: break-word;
+      }
+    </style>
     </head>
     <body>
-        <h1>This is our AI Mental Health App</h1>
-    </body>
+    <div class="chat-container">
+      <h1>AI Mental Health App</h1>
+      <form id="chat-form">
+        <input
+          type="text"
+          id="user-input"
+          name="user_input"
+          placeholder="Type your message..."
+        />
+        <button type="submit" id="submitBtn">Send</button>
+      </form>
+      <div id="result"></div>
+    </div>
+    <script>
+        window.onload = function () {
+          document
+            .getElementById("chat-form")
+            .addEventListener("submit", function (event) {
+              // Prevent the form from submitting and refreshing the page
+              event.preventDefault();
+  
+              let userInput = document.getElementById("user-input").value;
+              let url = `/gpt3.5?user_input=${encodeURIComponent(userInput)}`;
+  
+              fetch(url)
+                .then((response) => response.json())
+                .then((data) => {
+                  let content = data.content;
+                  let resultDiv = document.getElementById("result");
+                  resultDiv.innerHTML = content;
+                })
+                .catch((error) => {
+                  console.error("Error fetching GPT-3.5 response:", error);
+                });
+            });
+        };
+      </script>
+  </body>
 </html>
