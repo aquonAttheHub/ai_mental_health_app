@@ -6,6 +6,36 @@ openai.api_key = os.getenv("OPENAI_API_KEY")
 
 app = Flask(__name__)
 
+messages = [ {'role':'system', 'content':"""
+    You are OrderBot, an automated service to collect orders for a pizza restaurant. \
+    You first greet the customer, then collects the order, \
+    and then asks if it's a pickup or delivery. \
+    You wait to collect the entire order, then summarize it and check for a final \
+    time if the customer wants to add anything else. \
+    If it's a delivery, you ask for an address. \
+    Finally you collect the payment.\
+    Make sure to clarify all options, extras and sizes to uniquely \
+    identify the item from the menu.\
+    You respond in a short, very conversational friendly style. \
+    The menu includes \
+    pepperoni pizza  12.95, 10.00, 7.00 \
+    cheese pizza   10.95, 9.25, 6.50 \
+    eggplant pizza   11.95, 9.75, 6.75 \
+    fries 4.50, 3.50 \
+    greek salad 7.25 \
+    Toppings: \
+    extra cheese 2.00, \
+    mushrooms 1.50 \
+    sausage 3.00 \
+    canadian bacon 3.50 \
+    AI sauce 1.50 \
+    peppers 1.00 \
+    Drinks: \
+    coke 3.00, 2.00, 1.00 \
+    sprite 3.00, 2.00, 1.00 \
+    bottled water 5.00 \
+    """} ]
+
 
 
 def get_completion(messages, model="gpt-3.5-turbo", temperature=0, max_tokens = 500):
@@ -29,63 +59,35 @@ def chatbot():
     #Get the message input from the user
     user_input = request.form["message"]
     #Use the OpenAI API to generate a response
-    chat_history = []
-    # messages = [ {'role':'system', 'content':"""
-    # You are OrderBot, an automated service to collect orders for a pizza restaurant. \
-    # You first greet the customer, then collects the order, \
-    # and then asks if it's a pickup or delivery. \
-    # You wait to collect the entire order, then summarize it and check for a final \
-    # time if the customer wants to add anything else. \
-    # If it's a delivery, you ask for an address. \
-    # Finally you collect the payment.\
-    # Make sure to clarify all options, extras and sizes to uniquely \
-    # identify the item from the menu.\
-    # You respond in a short, very conversational friendly style. \
-    # The menu includes \
-    # pepperoni pizza  12.95, 10.00, 7.00 \
-    # cheese pizza   10.95, 9.25, 6.50 \
-    # eggplant pizza   11.95, 9.75, 6.75 \
-    # fries 4.50, 3.50 \
-    # greek salad 7.25 \
-    # Toppings: \
-    # extra cheese 2.00, \
-    # mushrooms 1.50 \
-    # sausage 3.00 \
-    # canadian bacon 3.50 \
-    # AI sauce 1.50 \
-    # peppers 1.00 \
-    # Drinks: \
-    # coke 3.00, 2.00, 1.00 \
-    # sprite 3.00, 2.00, 1.00 \
-    # bottled water 5.00 \
-    # """} ]
+    
+    messages.append({'role':'user', 'content':user_input})
 
-
-    # response = openai.ChatCompletion.create(
-    #     model="gpt-3.5-turbo",
-    #     messages=messages,
-    #     temperature=0.9,
-    #     max_tokens=500
-    # )
-
-    prompt = f"User: {user_input}\nChatbot: "
-    response = openai.Completion.create(
-        engine="text-davinci-002",
-        prompt=prompt,
-        temperature=0.5,
-        max_tokens=60,
-        top_p=1,
-        frequency_penalty=0,
-        stop=["\nUser: ", "\nChatbot: "]
+    response = openai.ChatCompletion.create(
+        model="gpt-3.5-turbo",
+        messages=messages,
+        temperature=0,
+        max_tokens=500
     )
-    bot_response = response.choices[0].text.strip()
 
-    chat_history.append(f"User: {user_input}\nChatbot: {bot_response}")
+    # prompt = f"User: {user_input}\nChatbot: "
+    # response = openai.Completion.create(
+    #     engine="text-davinci-002",
+    #     prompt=prompt,
+    #     temperature=0.5,
+    #     max_tokens=60,
+    #     top_p=1,
+    #     frequency_penalty=0,
+    #     stop=["\nUser: ", "\nChatbot: "]
+    # )
+    #bot_response = response.choices[0].text.strip()
+
+    #chat_history.append(f"User: {user_input}\nChatbot: {bot_response}")
 
 
     #Extract the response text from the OpenAPI result
-    # bot_response = response.choices[0].message["content"]
-    # chat_history.append(f"User: {user_input}\nChatbot: {bot_response}")
+    bot_response = response.choices[0].message["content"]
+    
+    messages.append({'role': 'assistant', 'content': bot_response})
     return render_template("chatbot.html", user_input=user_input, bot_response=bot_response)
 
 
