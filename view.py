@@ -37,7 +37,7 @@ messages = [ {'role':'system', 'content':"""
     """} ]
 
 
-
+#Helper function to help modulate code.
 def get_completion(messages, model="gpt-3.5-turbo", temperature=0, max_tokens = 500):
     #messages = [{"role": "user", "content": prompt}]
     response = openai.ChatCompletion.create(
@@ -60,33 +60,13 @@ def chatbot():
     user_input = request.form["message"]
     #Use the OpenAI API to generate a response
     
+    #update messages with the user input
     messages.append({'role':'user', 'content':user_input})
 
-    response = openai.ChatCompletion.create(
-        model="gpt-3.5-turbo",
-        messages=messages,
-        temperature=0,
-        max_tokens=500
-    )
-
-    # prompt = f"User: {user_input}\nChatbot: "
-    # response = openai.Completion.create(
-    #     engine="text-davinci-002",
-    #     prompt=prompt,
-    #     temperature=0.5,
-    #     max_tokens=60,
-    #     top_p=1,
-    #     frequency_penalty=0,
-    #     stop=["\nUser: ", "\nChatbot: "]
-    # )
-    #bot_response = response.choices[0].text.strip()
-
-    #chat_history.append(f"User: {user_input}\nChatbot: {bot_response}")
-
-
     #Extract the response text from the OpenAPI result
-    bot_response = response.choices[0].message["content"]
+    bot_response = get_completion(messages, model="gpt-3.5-turbo", temperature=0, max_tokens = 500)
     
+    #update messages with the model response
     messages.append({'role': 'assistant', 'content': bot_response})
     return render_template("chatbot.html", user_input=user_input, bot_response=bot_response)
 
