@@ -93,24 +93,31 @@ def get_completion(messages, model="gpt-3.5-turbo", temperature=0, max_tokens = 
 
 
 @app.route('/')
-def home():
+def index():
     return render_template("index.html")
 
-@app.route("/chatbot", methods=["POST"])
-def chatbot():
-    #Get the message input from the user
-    user_input = request.form["message"]
-    #Use the OpenAI API to generate a response
-    
-    #update messages with the user input
-    messages.append({'role':'user', 'content':user_input})
+@app.route('/index')
+def home_reload():
+    return render_template("index.html")
 
-    #Extract the response text from the OpenAPI result
-    bot_response = get_completion(messages, model="gpt-3.5-turbo", temperature=0, max_tokens = 500)
-    
-    #update messages with the model response
-    messages.append({'role': 'assistant', 'content': bot_response})
-    return render_template("chatbot.html", user_input=user_input, bot_response=bot_response)
+@app.route("/chatbot", methods=["POST","GET"])
+def chatbot():
+    if request.method == "POST":
+        #Get the message input from the user
+        user_input = request.form["message"]
+        #Use the OpenAI API to generate a response
+        
+        #update messages with the user input
+        messages.append({'role':'user', 'content':user_input})
+
+        #Extract the response text from the OpenAPI result
+        bot_response = get_completion(messages, model="gpt-3.5-turbo", temperature=0, max_tokens = 500)
+        
+        #update messages with the model response
+        messages.append({'role': 'assistant', 'content': bot_response})
+        return render_template("chatbot.html", user_input=user_input, bot_response=bot_response)
+    else:
+        return render_template("chatbot.html")
 
 @app.route("/depressionScreener")
 def depressionScreener():
