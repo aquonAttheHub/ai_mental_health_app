@@ -139,8 +139,9 @@ def depressionScreenerBot():
     depressionScreeningMessages.append({'role': 'assistant', 'content': bot_response})
     return render_template("depressionBot.html", user_input=user_input, bot_response=bot_response)
 
-
-
+@app.route("/about")
+def about():
+    return render_template("about.html")
 
 
 

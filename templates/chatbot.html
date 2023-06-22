@@ -1,11 +1,359 @@
 <!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="UTF-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Psych TodAI</title>
 
-<html>
-    <head>
-        <title>My Chatbot</title>
-    </head>
-    <body>
-        <h1>Chat with Me</h1>
+
+   <!-- font awesome cdn link  -->
+   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+
+   <style>
+     @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700&display=swap');
+
+
+   :root{
+       --green:#16a085;
+       --black:#444;
+       --light-color:#777;
+       --box-shadow:.5rem .5rem 0 rgba(22, 160, 133, .2);
+       --text-shadow:.4rem .4rem 0 rgba(0, 0, 0, .2);
+       --border:.2rem solid var(--green);
+   }
+
+
+   *{
+       font-family: 'Poppins', sans-serif;
+       margin:0; padding: 0;
+       box-sizing: border-box;
+       outline: none; border: none;
+       text-transform: capitalize;
+       transition: all .2s ease-out;
+       text-decoration: none;
+   }
+
+
+   html{
+       font-size: 62.5%;
+       overflow-x: hidden;
+       scroll-padding-top: 7rem;
+       scroll-behavior: smooth;
+   }
+
+
+   section{
+       padding:2rem 9%;
+   }
+
+
+   section:nth-child(even){
+       background: #f5f5f5;
+   }
+
+
+   .heading{
+       text-align: center;
+       padding-bottom: 2rem;
+       text-shadow: var(--text-shadow);
+       text-transform: uppercase;
+       color:var(--black);
+       font-size: 5rem;
+       letter-spacing: .4rem;
+   }
+
+
+   .heading span{
+       text-transform: uppercase;
+       color:var(--green);
+   }
+
+
+   .btn{
+       display: inline-block;
+       margin-top: 1rem;
+       padding: .5rem;
+       padding-left: 1rem;
+       border:var(--border);
+       border-radius: .5rem;
+       box-shadow: var(--box-shadow);
+       color:var(--green);
+       cursor: pointer;
+       font-size: 1.7rem;
+       background: #fff;
+   }
+
+
+   .btn span{
+       padding:.7rem 1rem;
+       border-radius: .5rem;
+       background: var(--green);
+       color:#fff;
+       margin-left: .5rem;
+   }
+
+
+   .btn:hover{
+       background: var(--green);
+       color:#fff;
+   }
+
+
+   .btn:hover span{
+       color: var(--green);
+       background:#fff;
+       margin-left: 1rem;
+   }
+
+
+   .header{
+       padding:2rem 9%;
+       position: fixed;
+       top:0; left: 0; right: 0;
+       z-index: 1000;
+       box-shadow: 0 .5rem 1.5rem rgba(0, 0, 0, .1);
+       display: flex;
+       align-items: center;
+       justify-content: space-between;
+       background: #84c9e9;
+   }
+
+
+   .header .logo{
+       font-size: 2.5rem;
+       color: var(--black);
+   }
+
+
+   .header .logo i{
+       color: var(--green);
+   }
+
+
+   .header .navbar a{
+       font-size: 1.7rem;
+       color: var(--light-color);
+       margin-left: 2rem;
+   }
+
+
+   .header .navbar a:hover{
+       color: var(--green);
+   }
+
+
+   #menu-btn{
+       /* font-size: 2.5rem;
+       border-radius: .5rem;*/
+       /* background: #eee;
+       color:var(--green);
+       padding: 1rem 1.5rem;
+       cursor: pointer; 
+       display: none; */
+       /*position: relative;*/
+       display: none;
+   }
+            
+
+
+   .home{
+       display: flex;
+       align-items: center;
+       flex-wrap: wrap;
+       gap:1.5rem;
+       padding-top: 10rem;
+   }
+
+
+   .home .image{
+       flex:1 1 45rem;
+   }
+
+
+   .home .image img{
+       width: 100%;
+   }
+
+
+   .home .content{
+       flex:1 1 45rem;
+   }
+
+
+   .home .content h3{
+       font-size: 4.5rem;
+       color:var(--black);
+       line-height: 1.8;
+       text-shadow: var(--text-shadow);
+   }
+
+
+   .home .content p{
+       font-size: 1.7rem;
+       color:var(--light-color);
+       line-height: 1.8;
+       padding: 1rem 0;
+   }
+
+   .topnav .icon {
+        display: none;
+   }
+
+
+
+   /* media queries  */
+   @media (max-width:991px){
+
+
+       html{
+           font-size: 55%;
+       }
+
+
+       .header{
+           padding: 2rem;
+       }
+
+
+       section{
+           padding:2rem;
+       }
+
+
+   }
+   /* .navigation--responsive {
+        display: none;
+   }
+
+   #toggle {
+        display: none;
+   }
+   svg.hamburger {
+        display: none;
+   } */
+
+
+   @media (max-width:768px){
+
+        #menu-btn {
+            position: relative;
+            display: inline-block;
+        }
+        .dropdown-btn {
+            background-color: #eee;
+            color: black;
+            padding: 16px;
+            font-size: 16px;
+            border: none;
+        }
+        .dropdown-content {
+                display: none;
+                position: absolute;
+                background-color: #f1f1f1;
+                min-width: 160px;
+                box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+                z-index: 1;
+        }
+        .dropdown-content a {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
+        /* Change color of dropdown links on hover */
+        .dropdown-content a:hover {background-color: #ddd;}
+
+        /* Show the dropdown menu on hover */
+        #menu-btn:hover .dropdown-content {display: block;}
+
+        /* Change the background color of the dropdown button when the dropdown content is shown */
+        #menu-btn:hover .dropdown-btn {background-color: #fff;}
+
+
+
+       .header .navbar{
+           position: absolute;
+           top:115%; right: 2rem;
+           border-radius: .5rem;
+           box-shadow: var(--box-shadow);
+           width: 30rem;
+           border: var(--border);
+           background: #fff;
+           transform: scale(0);
+           opacity: 0;
+           transform-origin: top right;
+           transition: none;
+       }
+
+
+       .header .navbar.active{
+           transform: scale(1);
+           opacity: 1;
+           transition: .2s ease-out;
+       }
+
+
+       .header .navbar a{
+           font-size: 2rem;
+           display: block;
+           margin:2.5rem;
+       }
+
+
+   }
+
+
+   @media (max-width:450px){
+
+
+       html{
+           font-size: 50%;
+       }
+
+   }
+   </style>
+
+
+</head>
+<body>
+  
+<!-- header section starts  -->
+
+
+<header class="header">
+
+
+   <a href="#" class="logo"><i class="fal fa-basketball-hoop"></i> PsychTodAI</a>
+   <script defer src='https://use.fontawesome.com/releases/v5.0.6/js/all.js'></script>
+
+
+
+   <nav class="navbar">
+        <a href="{{ url_for('index') }}" class="navbar-item">Home</a>
+        <a href="{{ url_for('about') }}" class="navbar-item">About</a>
+        <a href="{{ url_for('chatbot') }}" class="navbar-item">Chatbot</a>
+   </nav>
+   <div id="menu-btn">
+    <button class="dropdown-btn">Select</button>
+    <div class="dropdown-content">
+        <a href="{{ url_for('index') }}">Home</a>
+        <a href="{{ url_for('about') }}">About</a>
+        <a href="{{ url_for('chatbot') }}">Chatbot</a>
+      </div>
+   </div>
+
+
+</header>
+<section class="home" id="home">
+
+
+   <div class="image">
+       <img src="images/flame-basketball-svgrepo-com.svg" alt="">
+   </div>
+    <div class="content">
+        <h1>Chat with PsychtodAI</h1>
         <p><strong>You:</strong>{{ user_input }}</p>
         <p><strong>Chatbot:</strong>{{ bot_response }}</p>
         <form method="post" action="{{ url_for('chatbot') }}">
@@ -13,5 +361,9 @@
             <input type="text" id="message" name="message" required>
             <button type="submit">Send</button>
         </form>
-    </body>
+   </div>
+  </section>
+
+</body>
+
 </html>
